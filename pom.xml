@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>net.iceflow.stateroom</groupId>
+	<artifactId>stateroom</artifactId>
+	<packaging>pom</packaging>
+	
+	<version>1.0.0-SNAPSHOT</version>
+	
+	<name>stateroom</name>
+	
+	<description>Java framework library for finite state machines</description>
+
+	<url>http://code.google.com/p/stateroom/</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+	</properties>
+
+	<scm>
+		<connection>scm:svn:http://stateroom.googlecode.com/svn/trunk/</connection>
+		<developerConnection>scm:svn:https://stateroom.googlecode.com/svn/trunk/</developerConnection>
+		<url>http://code.google.com/p/stateroom/source/</url>
+	</scm>
+
+	<modules>
+		<module>stateroom-core</module>
+		<module>stateroom-examples</module>
+	</modules>
+
+	<build>
+		<plugins>
+		
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<showDeprecation>true</showDeprecation>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<tagBase>https://stateroom.googlecode.com/svn/tags/</tagBase>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.doxia</groupId>
+				<artifactId>doxia-maven-plugin</artifactId>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>render-books</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<books>
+						<book>
+							<directory>src/site/developer-guide</directory>
+							<descriptor>src/site/developer-guide.xml</descriptor>
+							<formats>
+								<format>
+									<id>pdf</id>
+								</format>
+								<format>
+									<id>xhtml</id>
+								</format>
+								<format>
+									<id>latex</id>
+								</format>
+							</formats>
+						</book>
+					</books>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4.3</version>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			
+		</plugins>
+	</build>
+	
+	<dependencies>
+	</dependencies>
+
+	<pluginRepositories>
+	</pluginRepositories>
+
+	<dependencyManagement>
+		<dependencies>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.7</version>
+			<scope>test</scope>
+			<type>jar</type>
+		</dependency>
+			
+		</dependencies>
+	</dependencyManagement>
+	
+</project>
