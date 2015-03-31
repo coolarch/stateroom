@@ -28,7 +28,7 @@ import com.unboundedprime.stateroom.core.exception.UnknownStateException;
  * Interface for strategies that define machines.
  * @param <M> Type used to represent the machine model
  */
-public interface MachineStrategy<M extends Model> {
+public interface MachineStrategy<M> {
 	
 	/**
 	 * Causes to the definition strategy to define the machine using the provided controls.

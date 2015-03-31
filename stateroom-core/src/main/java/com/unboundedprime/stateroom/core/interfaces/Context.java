@@ -21,29 +21,62 @@
  */
 package com.unboundedprime.stateroom.core.interfaces;
 
+import static java.util.Objects.requireNonNull;
+
+import com.unboundedprime.stateroom.core.State;
 import com.unboundedprime.stateroom.core.enums.Status;
 
 /**
  * Container for contextual information specific to an individual machine run instance.
  * @param <M> Type used to represent the machine model
  */
-public interface Context<M> {
+public final class Context<M> {
+	
+	private final State<M> state;
+	
+	private final Status status;
+	
+	private final M model;
+	
+	public Context(final State<M> state, final Status status, final M model) {
+		this.state = requireNonNull(state, "state shall not be null");
+		this.status = requireNonNull(status, "status shall not be null");
+		this.model = model;
+	}
+	
+	public Context<M> derive(State<M> state) {
+		return new Context<>(state, status, model);
+	}
+	
+	public Context<M> derive(Status status) {
+		return new Context<>(state, status, model);
+	}
+	
+	public Context<M> derive(M model) {
+		return new Context<>(state, status, model);
+	}
 	
 	/**
 	 * Gets the current state in this machine context after the most recent evaluation cycle.
 	 * @return Current state in this run context
 	 */
-	Class<?> getCurrentState();
+	public State<M> getState() {
+		return state;
+	}
 	
 	/**
 	 * Gets the current status of the machine after the most recent evaluation cycle.
 	 * @return Status of the machine in this run context
 	 */
-	Status getStatus();
+	public Status getStatus() {
+		return status;
+	}
 	
 	/**
 	 * Gets the model used by the context.
 	 * @return the model
 	 */
-	M getModel();
+	public M getModel() {
+		return model;
+	}
 }

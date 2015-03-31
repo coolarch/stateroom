@@ -30,7 +30,7 @@ import com.unboundedprime.stateroom.core.exception.UnknownStateException;
  * Control interface for a MachineStrategy to request that states and transitions be added to a machine.
  * @param <M> Type used to represent the machine model
  */
-public interface MachineDefinitionControls<M extends Model> {
+public interface MachineDefinitionControls<M> {
 	
 	/**
 	 * Adds a state to the machine.
@@ -38,7 +38,7 @@ public interface MachineDefinitionControls<M extends Model> {
 	 * @param acceptState Truth of whether the state is an accept state
 	 * @throws DuplicateStateException If a state that has previously been added is attempted to be added a second time
 	 */
-	void addState(final State<M> state, final boolean acceptState) throws DuplicateStateException;
+	void addState(final Class<?> state, final boolean acceptState) throws DuplicateStateException;
 	
 	/**
 	 * Adds a transition between two states with a predicate that indicates whether the transition should be followed.
@@ -47,5 +47,5 @@ public interface MachineDefinitionControls<M extends Model> {
 	 * @param predicate Predicate instance used to determine the truth of whether the transition should be followed
 	 * @throws UnknownStateException If an unknown state it referenced
 	 */
-	void addTransition(final State<M> start, final State<M> end, final Predicate<Context<M>> predicate) throws UnknownStateException;
+	void addTransition(final Class<?> start, final Class<?> end, final Predicate<Context<M>> predicate) throws UnknownStateException;
 }

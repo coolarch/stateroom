@@ -19,15 +19,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package com.unboundedprime.stateroom.core;
+package com.unboundedprime.stateroom.core.legacy;
 
 import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
 
 import com.unboundedprime.stateroom.core.interfaces.Context;
-import com.unboundedprime.stateroom.core.interfaces.Model;
-import com.unboundedprime.stateroom.core.interfaces.State;
 
 /**
  * Provides a structured mapping between a single target state and an instance of the Predicate implementation.
@@ -37,7 +35,7 @@ import com.unboundedprime.stateroom.core.interfaces.State;
  * </p>
  * @param <M> Type used to represent the machine model
  */
-class TransitionMapping<M extends Model> {
+class TransitionMapping<M> {
 	
 	/**
 	 * Predicate used to determine if this state transition should be taken.
@@ -47,14 +45,14 @@ class TransitionMapping<M extends Model> {
 	/**
 	 * Target state to transition to, if the predicate evaluates to true, such that a transition should take place.
 	 */
-	private final State<M> _targetState;
+	private final Class<?> _targetState;
 	
 	/**
 	 * Constructs a new TransitionMapping.
 	 * @param predicate Predicate instance used to determine if this state transition should be taken
 	 * @param targetState target state to which to transition, if the predicate evaluates to true
 	 */
-	public TransitionMapping(final Predicate<Context<M>> predicate, final State<M> targetState) {
+	public TransitionMapping(final Predicate<Context<M>> predicate, final Class<?> targetState) {
 		requireNonNull(predicate, "predicate may not be null");
 		requireNonNull(targetState, "targetState may not be null");
 		
@@ -74,7 +72,7 @@ class TransitionMapping<M extends Model> {
 	 * Getter for the targetState field.
 	 * @return target state that should be transitioned to, if the predicate evaluates to true
 	 */
-	public State<M> getTargetState() {
+	public Class<?> getTargetState() {
 		return this._targetState;
 	}
 }

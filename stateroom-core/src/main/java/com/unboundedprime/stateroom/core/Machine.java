@@ -1,214 +1,156 @@
-/*
- * Machine.java
- *
- * Stateroom - Java framework library for finite state machines
- * Copyright (C) 2009 by Matthew Werny
- * All Rights Reserved
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
- */
 package com.unboundedprime.stateroom.core;
+
+import static java.util.Objects.requireNonNull;
 
 import java.util.HashMap;
 import java.util.Map;
-import static java.util.Objects.requireNonNull;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import com.unboundedprime.stateroom.core.exception.DefinitionFailedException;
+import com.unboundedprime.stateroom.core.enums.Status;
 import com.unboundedprime.stateroom.core.interfaces.Context;
 
-/**
- * Finite state machine container to allow the running of machine strategies.
- * @param <M> Type used to represent the machine model
- */
-public final class Machine<M> {
+public class Machine<M> {
+
+	private Supplier<M> modelSupplier;
 	
-	/**
-	 * Prevents external instantiation.
-	 */
-	private Machine() {
-		
+	private Function<Context<M>, M> preEvaluationTransform = c -> c.getModel();
+	
+	private State<M> startState;
+	
+	private Predicate<Context<M>> continuePredicate = c -> true;
+	
+	private final Map<State<M>, Transitions<M>> transitions = new HashMap<>();
+
+	public static <T> Builder<T> builder() {
+		return new BuilderImpl<>();
 	}
 	
-	/**
-	 * Evaluates a context until it either crashes or enters an accept state.
-	 * <p>
-	 * WARNING: If your machine strategy defines a machine that is Turing complete, or is otherwise capable of looping forever,
-	 * this method is also capable of looping forever and not returning. Approach usage of this method with caution.
-	 * </p>
-	 * @param context Context to evaluate
-	 */
-	public void evaluateUntilHalted(final Context<M> context) {
-		
-	}
-	
-	/**
-	 * Evaluates a context for one evaluation cycle, performs the appropriate state update and returns.
-	 * @param context Context to evaluate
-	 */
-	public void evaluate(final Context<M> context) {
-		
-	}
-	
-	/**
-	 * Creates a newly initialized context representing a specific machine instance.
-	 * @return Newly create context
-	 */
 	public Context<M> createContext() {
-		return null;
+		final M model = modelSupplier.get();
+		
+		Context<M> context = new Context<>(startState, Status.READY, model);
+		
+		return context;
 	}
 	
-	public interface StateFactory<T> {
+	public Context<M> evaluate(final Context<M> context) {
+		final M model = preEvaluationTransform.apply(context);
+		final Context<M> evaluationContext = context.derive(model);
 		
-		StateFactory<T> with(final Class<?> state);
+		Context<M> result = context;
 		
-		TransitionFactory<T> from(final Class<?> state);
+		final Transitions<M> stateTransitions = transitions.get(context.getState());
 		
-	}
-	
-	public interface AndFactory<T> {
-		
-		TransitionFactory<T> from(final Class<?> state);
-		
-	}
-	
-	public interface TransitionFactory<T> {
-		
-		TransitionFactory<T> transition(final Class<?> state, final Predicate<Context<T>> predicate);
-		
-		TransitionFactory<T> transition(final Class<?> state, final Predicate<Context<T>> predicate, Function<T,T> modelFransform);
-		
-		AndFactory<T> and();
-		
-		ModelFactoryFactory<T> modelFactory(final Supplier<T> supplier);
-		
-	}
-	
-	public interface ModelFactoryFactory<T> {
-		
-		Factory<T> startWith(final Function<Context<T>, Class<?>> supplier);
-		
-	}
-	
-	public interface Factory<T> {
-		
-		Factory<T> haltOn(final Predicate<Context<T>> predicate);
-		
-		Factory<T> acceptOn(final Predicate<Context<T>> predicate);
-		
-		Machine<T> build() throws DefinitionFailedException;
-	}
-	
-	/**
-	 * Factory for constructing new implementation instances of the Machine interface.
-	 */
-	static final class FactoryImpl<T> implements StateFactory<T>, Factory<T>, TransitionFactory<T>, AndFactory<T>, ModelFactoryFactory<T> {
-		
-		private Map<Class<?>, Map<Class<?>, Tuple2<Predicate<Context<T>>, Function<T, T>>>> _transitions = new HashMap<>();
-		
-		private Class<?> _currentState;
-		
-		private Predicate<Context<T>> _haltOnPredicate = (c) -> false;
-		
-		private Predicate<Context<T>> _acceptOnPredicate = (c) -> false;
-		
-		private Function<Context<T>, Class<?>> _startStateFn;
-		
-		private Supplier<T> _modelFactorySupplier;
-		
-		/**
-		 * Intentionally does nothing else but prevent instantiation of this factory class.
-		 */
-		FactoryImpl() {
-			throw new UnsupportedOperationException("Instantiation not allowed.");
-		}
-		
-		public StateFactory<T> with(final Class<?> state) {
-			requireNonNull(state, "state shall not be null");
+		if (stateTransitions != null) {
 			
-			_transitions.getOrDefault(state, new HashMap<>());
-			
-			return this;
+			for (final Transition<M> transition : stateTransitions) {
+				final Predicate<Context<M>> predicate = transition.getPredicate();
+				
+				if (predicate.test(context)) {
+					final Context<M> transitionalContext = evaluationContext.derive(transition.getTargetState());
+					final M finalModel = transition.getModelTransform().apply(transitionalContext);
+					final Context<M> finalContext = transitionalContext.derive(finalModel);
+					result = finalContext;
+					break;
+				}
+			}
 		}
 		
-		public TransitionFactory<T> from(final Class<?> state) {
-			_currentState = requireNonNull(state, "state shall not be null");
-			
-			return this;
+		return result;
+	}
+	
+	public Context<M> evaluateUntilHalted(final Context<M> context) {
+		Context<M> currentContext = context;
+
+		while (continuePredicate.test(currentContext)) {
+			currentContext = evaluate(currentContext);
 		}
 		
-		public TransitionFactory<T> transition(final Class<?> state, final Predicate<Context<T>> predicate) {
-			return transition(state, predicate, Function.identity());
-		}
+		return currentContext;
+	}
+
+	public interface Builder<M> extends AbstractBuilder<Machine<M>> {
 		
+		@SuppressWarnings("unchecked")
+		Builder<M> withState(State<M> state, Transition<M>... transitions);
+		
+		Builder<M> withModelSupplier(Supplier<M> modelSupplier);
+		
+		Builder<M> withStartState(State<M> startState);
+		
+		Builder<M> withContinuePredicate(Predicate<Context<M>> continuePredicate);
+		
+		Builder<M> withPreEvaluationTransform(Function<Context<M>, M> preEvaluationTransform);
+		
+	}
+	
+	static class BuilderImpl<M> extends AbstractBuilderImpl<Machine<M>> implements Builder<M> {
+
+		protected BuilderImpl() {
+			super(new Machine<>());
+		}
+
 		@Override
-		public TransitionFactory<T> transition(Class<?> state, Predicate<Context<T>> predicate, Function<T, T> modelFransform) {
-			requireNonNull(state, "state shall not be null");
-			requireNonNull(predicate, "predicate shall not be null");
-			requireNonNull(modelFransform, "modelFransform shall not be null");
+		protected Set<String> validate(Set<String> errors, Machine<M> instance) {
+			final Set<State<M>> states = instance.transitions.keySet();
 			
-			_transitions.getOrDefault(_currentState, new HashMap<>()).put(state, new Tuple2<>(predicate, modelFransform));
+			final String invalidStates = instance.transitions.values()
+				.stream()
+				.flatMap(t -> t.findInvalidStateNames(states).stream())
+				.collect(Collectors.joining(", "));
 			
-			return this;
+			if (!"".equals(invalidStates)) {
+				errors.add("Invalid states: " + invalidStates);
+			}
+			
+			if (!states.contains(instance.startState)) {
+				errors.add("Invalid start state: " + instance.startState.getName());
+			}
+			
+			return errors;
 		}
-		
+
+		@SuppressWarnings("unchecked")
 		@Override
-		public AndFactory<T> and() {
-			return this;
-		}
-		
-		public Factory<T> haltOn(final Predicate<Context<T>> predicate) {
-			_haltOnPredicate = requireNonNull(predicate, "predicate shall not be null");
+		public Builder<M> withState(State<M> state, Transition<M>... stateTransitions) {
+			final Transitions<M> transitions = new Transitions<>(stateTransitions);
+			
+			getInstance().transitions.put(state, transitions);
 			
 			return this;
 		}
-		
-		public Factory<T> acceptOn(final Predicate<Context<T>> predicate) {
-			_acceptOnPredicate = requireNonNull(predicate, "predicate shall not be null");
+
+		@Override
+		public Builder<M> withModelSupplier(Supplier<M> modelSupplier) {
+			getInstance().modelSupplier = requireNonNull(modelSupplier, "modelSupplier shall not be null");
 			
 			return this;
 		}
-		
-		public Factory<T> startWith(final Function<Context<T>, Class<?>> startStateFn) {
-			_startStateFn = requireNonNull(startStateFn, "startStateFn shall not be null");
+
+		@Override
+		public Builder<M> withStartState(State<M> startState) {
+			getInstance().startState = requireNonNull(startState, "startState shall not be null");
 			
 			return this;
 		}
-		
-		public ModelFactoryFactory<T> modelFactory(final Supplier<T> supplier) {
-			_modelFactorySupplier = requireNonNull(supplier, "supplier shall not be null");
+
+		@Override
+		public Builder<M> withPreEvaluationTransform(Function<Context<M>, M> preEvaluationTransform) {
+			getInstance().preEvaluationTransform = requireNonNull(preEvaluationTransform, "preEvaluationTransform shall not be null");
 			
 			return this;
 		}
-		
-		/**
-		 * Builds a new implementation of the Machine interface using the definition in the provided strategy and uses the provided discriminator.
-		 * @param <T> Model type used by the machine
-		 * @param strategy Machine definition strategy
-		 * @param discriminator State discriminator to be used by the machine
-		 * @return Newly built machine
-		 * @throws DefinitionFailedException If the machine fails to be defined without error
-		 */
-		public Machine<T> build() throws DefinitionFailedException {
-			return null;
+
+		@Override
+		public Builder<M> withContinuePredicate(Predicate<Context<M>> continuePredicate) {
+			getInstance().continuePredicate = requireNonNull(continuePredicate, "continuePredicate shall not be null");
+			
+			return this;
 		}
-	}
-	
-	public static <T> StateFactory<T> factory() {
-		return new FactoryImpl<>();
 	}
 }

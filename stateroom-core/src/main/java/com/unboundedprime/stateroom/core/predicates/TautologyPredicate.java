@@ -24,13 +24,12 @@ package com.unboundedprime.stateroom.core.predicates;
 import java.util.function.Predicate;
 
 import com.unboundedprime.stateroom.core.interfaces.Context;
-import com.unboundedprime.stateroom.core.interfaces.Model;
 
 /**
  * Predicate that always evaluates to true.
  * @param <M> Type used to represent the machine model
  */
-public class TautologyPredicate<M extends Model> implements Predicate<Context<M>> {
+public class TautologyPredicate<M> implements Predicate<Context<M>> {
 	
 	/**
 	 * Indicates whether the predicate is currently true.
