@@ -5,6 +5,7 @@ package com.unboundedprime.stateroom.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertSame;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -59,6 +60,7 @@ public class StateTest {
 		final Context<String> newContext = machine.evaluateUntilHalted(context);
 		final State<String> resultingState = newContext.getState();
 		
+		assertSame(evenEven, resultingState);
 		assertEquals("Even Even", resultingState.getName());
 		assertTrue(resultingState.isAcceptState());
 	}
