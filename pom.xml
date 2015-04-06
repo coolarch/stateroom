@@ -3,7 +3,7 @@
 	
 	<modelVersion>4.0.0</modelVersion>
 	
-	<groupId>net.iceflow.stateroom</groupId>
+	<groupId>cool.arch.stateroom</groupId>
 	<artifactId>stateroom</artifactId>
 	<packaging>pom</packaging>
 	
@@ -13,7 +13,7 @@
 	
 	<description>Java framework library for finite state machines</description>
 
-	<url>http://code.google.com/p/stateroom/</url>
+	<url>http://www.arch.cool/stateroom/</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,9 +21,9 @@
 	</properties>
 
 	<scm>
-		<connection>scm:svn:http://stateroom.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://stateroom.googlecode.com/svn/trunk/</developerConnection>
-		<url>http://code.google.com/p/stateroom/source/</url>
+		<connection>scm:git:https://github.com/coolarch/stateroom.git</connection>
+		<developerConnection>scm:git:https://github.com/coolarch/stateroom.git</developerConnection>
+		<url>https://github.com/coolarch/stateroom</url>
 	</scm>
 
 	<modules>
@@ -42,14 +42,6 @@
 					<target>1.8</target>
 					<showDeprecation>true</showDeprecation>
 					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<configuration>
-					<tagBase>https://stateroom.googlecode.com/svn/tags/</tagBase>
 				</configuration>
 			</plugin>
 			
