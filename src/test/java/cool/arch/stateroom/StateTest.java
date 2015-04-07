@@ -5,7 +5,7 @@ package cool.arch.stateroom;
 
 import static cool.arch.stateroom.StateTest.Alphabet.A;
 import static cool.arch.stateroom.StateTest.Alphabet.B;
-import static cool.arch.stateroom.Status.ACCEPTED;
+import static cool.arch.stateroom.enums.Status.ACCEPTED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 

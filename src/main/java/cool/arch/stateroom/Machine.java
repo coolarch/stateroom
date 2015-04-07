@@ -1,6 +1,6 @@
 package cool.arch.stateroom;
 
-import static cool.arch.stateroom.Status.READY;
+import static cool.arch.stateroom.enums.Status.READY;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +9,8 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import cool.arch.stateroom.enums.Status;
 
 public class Machine<M> {
 

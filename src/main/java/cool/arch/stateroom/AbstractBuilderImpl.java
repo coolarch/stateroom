@@ -19,8 +19,9 @@ abstract class AbstractBuilderImpl<T> implements AbstractBuilder<T> {
 		final Set<String> errors = validate(new HashSet<>(), getInstance());
 
 		if (!errors.isEmpty()) {
-			final StringJoiner joiner = new StringJoiner(", ", "Instance of " + instance.getClass()
-				.getName() + " is not valid to be built: ", ".");
+			final Class<?> instanceClass = instance.getClass();
+			final StringJoiner joiner = new StringJoiner(", ", "Instance of " + instanceClass.getName()
+				+ " is not valid to be built: ", ".");
 			errors.forEach(joiner::add);
 
 			throw new IllegalStateException(joiner.toString());

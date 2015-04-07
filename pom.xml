@@ -5,7 +5,7 @@
 	
 	<groupId>cool.arch.stateroom</groupId>
 	<artifactId>stateroom</artifactId>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	
 	<version>1.0.0-SNAPSHOT</version>
 	
@@ -25,11 +25,6 @@
 		<developerConnection>scm:git:https://github.com/coolarch/stateroom.git</developerConnection>
 		<url>https://github.com/coolarch/stateroom</url>
 	</scm>
-
-	<modules>
-		<module>stateroom-core</module>
-		<module>stateroom-examples</module>
-	</modules>
 
 	<build>
 		<plugins>
@@ -119,6 +114,19 @@
 	</build>
 	
 	<dependencies>
+	
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+	
 	</dependencies>
 
 	<pluginRepositories>
