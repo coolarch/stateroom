@@ -16,12 +16,28 @@
 		<developerConnection>scm:git:https://github.com/coolarch/stateroom.git</developerConnection>
 		<url>https://github.com/coolarch/stateroom</url>
 	</scm>
-	
+	<developers>
+		<developer>
+			<id>jdoe</id>
+			<name>John Doe</name>
+			<email>jdoe@email.com</email>
+				<url>http://www.example.com/jdoe</url>
+				<organization>ACME</organization>
+				<organizationUrl>http://www.example.com</organizationUrl>
+				<roles>
+					<role>architect</role>
+					<role>developer</role>
+				</roles>
+				<timezone>America/New_York</timezone>
+				<properties>
+					<picUrl>http://www.example.com/jdoe/pic</picUrl>
+				</properties>
+		</developer>
+	</developers>
 	<ciManagement>
 		<system>TravisCI</system>
 		<url>https://travis-ci.org/coolarch/stateroom</url>
 	</ciManagement>
-	
 	<build>
 		<plugins>
 			<plugin>
@@ -68,6 +84,22 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>lt.velykis.maven.skins</groupId>
+						<artifactId>reflow-velocity-tools</artifactId>
+						<version>1.1.1</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.velocity</groupId>
+						<artifactId>velocity</artifactId>
+						<version>1.7</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
 	</build>
 	<reporting>
@@ -82,7 +114,6 @@
 				<reportSets>
 					<reportSet>
 						<reports>
-							<report>index</report>
 							<report>summary</report>
 							<report>project-team</report>
 							<report>dependencies</report>
