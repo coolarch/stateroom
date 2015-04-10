@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cool.arch.stateroom</groupId>
 	<artifactId>stateroom</artifactId>
-	<packaging>jar</packaging>
 	<version>1.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>stateroom</name>
 	<description>Java framework library for finite state machines</description>
 	<url>http://www.arch.cool/stateroom/</url>
@@ -16,24 +16,35 @@
 		<developerConnection>scm:git:https://github.com/coolarch/stateroom.git</developerConnection>
 		<url>https://github.com/coolarch/stateroom</url>
 	</scm>
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/coolarch/stateroom/issues</url>
+	</issueManagement>
 	<developers>
 		<developer>
 			<id>jdoe</id>
 			<name>John Doe</name>
 			<email>jdoe@email.com</email>
-				<url>http://www.example.com/jdoe</url>
-				<organization>ACME</organization>
-				<organizationUrl>http://www.example.com</organizationUrl>
-				<roles>
-					<role>architect</role>
-					<role>developer</role>
-				</roles>
-				<timezone>America/New_York</timezone>
-				<properties>
-					<picUrl>http://www.example.com/jdoe/pic</picUrl>
-				</properties>
+			<url>http://www.example.com/jdoe</url>
+			<organization>ACME</organization>
+			<organizationUrl>http://www.example.com</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>America/Denver</timezone>
+			<properties>
+				<picUrl>http://www.example.com/jdoe/pic</picUrl>
+			</properties>
 		</developer>
 	</developers>
+	<inceptionYear>2015</inceptionYear>
 	<ciManagement>
 		<system>TravisCI</system>
 		<url>https://travis-ci.org/coolarch/stateroom</url>
@@ -100,7 +111,123 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<groupId>com.lewisd</groupId>
+				<artifactId>lint-maven-plugin</artifactId>
+				<version>0.0.8</version>
+				<configuration>
+					<failOnViolation>true</failOnViolation>
+				</configuration>
+				<executions>
+					<execution>
+						<id>plugin-execution-lint-maven-plugin-validate-check</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.4.201502262128</version>
+				<executions>
+					<execution>
+						<id>default-prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-prepare-agent-integration</id>
+						<goals>
+							<goal>prepare-agent-integration</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-report</id>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-report-integration</id>
+						<goals>
+							<goal>report-integration</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<!-- implmentation is needed only for Maven 2 -->
+								<rule implementation="org.jacoco.maven.RuleConfiguration">
+									<element>BUNDLE</element>
+									<limits>
+										<!-- implmentation is needed only for Maven 2 -->
+										<limit implementation="org.jacoco.report.check.Limit">
+											<counter>COMPLEXITY</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>0.60</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.16</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.16</version>
+				<executions>
+					<execution>
+						<id>default-integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.lewisd</groupId>
+										<artifactId>lint-maven-plugin</artifactId>
+										<versionRange>[0.0.8,)</versionRange>
+										<goals>
+											<goal>check</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 	<reporting>
 		<plugins>
@@ -174,8 +301,8 @@
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-all</artifactId>
 				<version>1.7</version>
-				<scope>test</scope>
 				<type>jar</type>
+				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
