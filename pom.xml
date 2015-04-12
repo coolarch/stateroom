@@ -5,11 +5,14 @@
 	<artifactId>stateroom</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>stateroom</name>
+	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Java framework library for finite state machines</description>
 	<url>http://www.arch.cool/stateroom/</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<lib.junit.version>4.12</lib.junit.version>
+		<lib.mockito.version>1.7</lib.mockito.version>
 	</properties>
 	<scm>
 		<connection>scm:git:https://github.com/coolarch/stateroom.git</connection>
@@ -28,20 +31,17 @@
 	</issueManagement>
 	<developers>
 		<developer>
-			<id>jdoe</id>
-			<name>John Doe</name>
-			<email>jdoe@email.com</email>
-			<url>http://www.example.com/jdoe</url>
-			<organization>ACME</organization>
-			<organizationUrl>http://www.example.com</organizationUrl>
+			<id>matthew.werny</id>
+			<name>Matthew Werny</name>
+			<email>matthewwerny+github@gmail.com</email>
+			<url>http://www.arch.cool</url>
+			<organization>CoolArch</organization>
+			<organizationUrl>http://www.arch.cool</organizationUrl>
 			<roles>
 				<role>architect</role>
 				<role>developer</role>
 			</roles>
 			<timezone>America/Denver</timezone>
-			<properties>
-				<picUrl>http://www.example.com/jdoe/pic</picUrl>
-			</properties>
 		</developer>
 	</developers>
 	<inceptionYear>2015</inceptionYear>
@@ -69,7 +69,7 @@
 					<execution>
 						<id>attach-sources</id>
 						<goals>
-							<goal>jar</goal>
+							<goal>jar-no-fork</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -98,6 +98,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
+				<version>3.4</version>
 				<dependencies>
 					<dependency>
 						<groupId>lt.velykis.maven.skins</groupId>
@@ -199,6 +200,31 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
+					<goals>deploy</goals>
+				</configuration>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -234,6 +260,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.8</version>
 				<configuration>
 					<dependencyDetailsEnabled>false</dependencyDetailsEnabled>
 					<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
@@ -250,7 +277,6 @@
 							<report>modules</report>
 							<report>plugins</report>
 							<report>distribution-management</report>
-							<report>help</report>
 							<report>license</report>
 							<report>dependency-management</report>
 							<report>mailing-list</report>
@@ -279,31 +305,24 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<version>${lib.junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
+			<version>${lib.mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<pluginRepositories>
-	</pluginRepositories>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.8.2</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-all</artifactId>
-				<version>1.7</version>
-				<type>jar</type>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 </project>
