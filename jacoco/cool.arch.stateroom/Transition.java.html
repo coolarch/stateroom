@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Transition.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">cool.arch.stateroom:stateroom</a> &gt; <a href="index.source.html" class="el_package">cool.arch.stateroom</a> &gt; <span class="el_source">Transition.java</span></div><h1>Transition.java</h1><pre class="source lang-java linenums">package cool.arch.stateroom;
+
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+
+<span class="fc" id="L6">public class Transition&lt;M&gt; {</span>
+
+	private Predicate&lt;Context&lt;M&gt;&gt; predicate;
+
+	private State&lt;M&gt; targetState;
+
+<span class="fc" id="L12">	private BiFunction&lt;State&lt;M&gt;, M, M&gt; modelTransform = (state, model) -&gt; model;</span>
+
+	public M onEnter(final State&lt;M&gt; state, final M model) {
+<span class="nc" id="L15">		return modelTransform.apply(state, model);</span>
+	}
+
+	public BiFunction&lt;State&lt;M&gt;, M, M&gt; getModelTransform() {
+<span class="fc" id="L19">		return modelTransform;</span>
+	}
+
+	public Predicate&lt;Context&lt;M&gt;&gt; getPredicate() {
+<span class="fc" id="L23">		return predicate;</span>
+	}
+
+	public State&lt;M&gt; getTargetState() {
+<span class="fc" id="L27">		return targetState;</span>
+	}
+
+	void setPredicate(Predicate&lt;Context&lt;M&gt;&gt; predicate) {
+<span class="fc" id="L31">		this.predicate = predicate;</span>
+<span class="fc" id="L32">	}</span>
+
+	void setTargetState(State&lt;M&gt; targetState) {
+<span class="fc" id="L35">		this.targetState = targetState;</span>
+<span class="fc" id="L36">	}</span>
+
+	void setModelTransform(BiFunction&lt;State&lt;M&gt;, M, M&gt; modelTransform) {
+<span class="nc" id="L39">		this.modelTransform = modelTransform;</span>
+<span class="nc" id="L40">	}</span>
+
+	@Override
+	public String toString() {
+<span class="nc" id="L44">		return String.format(&quot;{'targetState':%s}&quot;, targetState);</span>
+	}
+
+	public static &lt;T&gt; TransitionBuilder&lt;T&gt; builder() {
+<span class="fc" id="L48">		return new TransitionBuilderImpl&lt;&gt;();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>StateBuilderFacadeImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">cool.arch.stateroom:stateroom</a> &gt; <a href="index.source.html" class="el_package">cool.arch.stateroom</a> &gt; <span class="el_source">StateBuilderFacadeImpl.java</span></div><h1>StateBuilderFacadeImpl.java</h1><pre class="source lang-java linenums">package cool.arch.stateroom;
+
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+
+final class StateBuilderFacadeImpl&lt;M&gt; implements StateBuilderFacade&lt;M&gt; {
+	
+	private final MachineBuilderImpl&lt;M&gt; builder;
+	
+	private final State&lt;M&gt; state;
+	
+	private final Queue&lt;Transition&lt;M&gt;&gt; builtTransitions;
+	
+	StateBuilderFacadeImpl(MachineBuilderImpl&lt;M&gt; builder, State&lt;M&gt; state) {
+<span class="fc" id="L17">		this(builder, state, new LinkedList&lt;&gt;());</span>
+<span class="fc" id="L18">	}</span>
+	
+<span class="fc" id="L20">	StateBuilderFacadeImpl(MachineBuilderImpl&lt;M&gt; builder, State&lt;M&gt; state, Queue&lt;Transition&lt;M&gt;&gt; builtTransitions) {</span>
+<span class="fc" id="L21">		this.builder = builder;</span>
+<span class="fc" id="L22">		this.state = state;</span>
+<span class="fc" id="L23">		this.builtTransitions = builtTransitions;</span>
+<span class="fc" id="L24">	}</span>
+
+	@Override
+	public StateBuilderFacade&lt;M&gt; withState(State&lt;M&gt; state) {
+<span class="fc" id="L28">		builder.withState(this.state, new Transitions&lt;&gt;(builtTransitions));</span>
+
+<span class="fc" id="L30">		return new StateBuilderFacadeImpl&lt;&gt;(builder, state);</span>
+	}
+
+	@Override
+	public Machine&lt;M&gt; build() {
+<span class="fc" id="L35">		builder.withState(state, new Transitions&lt;&gt;(builtTransitions));</span>
+		
+<span class="fc" id="L37">		return builder.build();</span>
+	}
+
+	@Override
+	public StateBuilderFacade&lt;M&gt; to(State&lt;M&gt; targetState, Predicate&lt;Context&lt;M&gt;&gt; predicate) {
+<span class="fc" id="L42">		final Transition&lt;M&gt; transition = Transition.&lt;M&gt;builder()</span>
+<span class="fc" id="L43">			.to(targetState)</span>
+<span class="fc" id="L44">			.when(predicate)</span>
+<span class="fc" id="L45">			.build();</span>
+
+<span class="fc" id="L47">		builtTransitions.add(transition);</span>
+
+<span class="fc" id="L49">		return this;</span>
+	}
+
+	@Override
+	public StateBuilderFacade&lt;M&gt; to(State&lt;M&gt; targetState, Predicate&lt;Context&lt;M&gt;&gt; predicate,
+		BiFunction&lt;State&lt;M&gt;, M, M&gt; modelTransform) {
+<span class="nc" id="L55">		final Transition&lt;M&gt; transition = Transition.&lt;M&gt;builder()</span>
+<span class="nc" id="L56">			.to(targetState)</span>
+<span class="nc" id="L57">			.when(predicate)</span>
+<span class="nc" id="L58">			.transformModelWith(modelTransform)</span>
+<span class="nc" id="L59">			.build();</span>
+
+<span class="nc" id="L61">		builtTransitions.add(transition);</span>
+
+<span class="nc" id="L63">		return this;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

@@ -8,7 +8,7 @@
 
 	<head>
 		<meta charset="UTF-8" />
-		<title>Stateroom | cool.arch.stateroom:stateroom</title>
+		<title>Dependency Convergence | cool.arch.stateroom:stateroom</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="" />
 		<meta http-equiv="content-language" content="en" />
@@ -34,7 +34,7 @@
 		
 	</head>
 
-	<body class="page-index project-stateroom" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
+	<body class="page-dependency-convergence project-stateroom" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
 
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
@@ -54,7 +54,7 @@
 									<li ><a href="license.html" title="License">License</a></li>
 								</ul>
 							</li>
-							<li class="dropdown">
+							<li class="dropdown active">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Maven documentation <b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li class="dropdown-submenu ">
@@ -69,7 +69,7 @@
 											<li ><a href="plugins.html" title="Project Plugins">Project Plugins</a></li>
 											<li ><a href="distribution-management.html" title="Distribution Management">Distribution Management</a></li>
 											<li ><a href="license.html" title="Project License">Project License</a></li>
-											<li ><a href="dependency-convergence.html" title="Dependency Convergence">Dependency Convergence</a></li>
+											<li class="active"><a href="" title="Dependency Convergence">Dependency Convergence</a></li>
 											<li ><a href="plugin-management.html" title="Plugin Management">Plugin Management</a></li>
 										</ul>
 									</li>
@@ -96,9 +96,9 @@
 	<header>
 		<div>
 			<ul class="breadcrumb">
-				<li><a href="" title="Home">Home</a></li>
+				<li><a href="index.html" title="Home">Home</a></li>
 				<li class="divider">/</li>
-				<li>Stateroom</li>
+				<li>Dependency Convergence</li>
 			</ul>
 		</div>
 	</header>
@@ -107,10 +107,69 @@
 	<div class="row">
 		<div class="span8">
 			<div class="body-content">
-<div class="page-header">
- <h1 id="stateroom">Stateroom</h1>
+<div class="section"> 
+ <div class="page-header">
+  <h2 id="Dependency_Convergence">Dependency Convergence</h2>
+ </div> 
+ <table border="0" class="bodyTable table table-striped table-hover"> 
+  <caption> 
+   <b>Legend:</b> 
+  </caption> 
+  <tbody> 
+   <tr class="a"> 
+    <td><i class="icon-exclamation-sign"></i></td> 
+    <td>At least one dependency has a differing version of the dependency or has SNAPSHOT dependencies.</td> 
+   </tr> 
+  </tbody> 
+ </table> 
+ <br /> 
+ <table border="0" class="bodyTable table table-striped table-hover"> 
+  <thead> 
+   <tr class="a"> 
+    <th>Ready for release (100 % convergence and no SNAPSHOTS):</th> 
+    <td><i class="icon-ok"></i>&nbsp;<b>Success</b></td> 
+   </tr> 
+  </thead> 
+  <thead> 
+   <tr class="b"> 
+    <th>Convergence (NOD/NOA):</th> 
+    <td><i class="icon-ok"></i>&nbsp;<b>100 %</b></td> 
+   </tr> 
+  </thead> 
+  <thead> 
+   <tr class="a"> 
+    <th>Number of SNAPSHOT artifacts (NOS):</th> 
+    <td>0</td> 
+   </tr> 
+  </thead> 
+  <thead> 
+   <tr class="b"> 
+    <th>Number of version-conflicting artifacts (NOC):</th> 
+    <td>0</td> 
+   </tr> 
+  </thead> 
+  <thead> 
+   <tr class="a"> 
+    <th>Number of unique artifacts (NOA):</th> 
+    <td>3</td> 
+   </tr> 
+  </thead> 
+  <thead> 
+   <tr class="b"> 
+    <th>Number of dependencies (NOD):</th> 
+    <td>3</td> 
+   </tr> 
+  </thead> 
+  <caption> 
+   <b>Statistics:</b> 
+  </caption> 
+  <tbody> 
+  </tbody> 
+ </table> 
 </div> 
-<p>Content to go here</p>
+<div class="section"> 
+ <h3 id="Dependencies_used_in_this_project">Dependencies used in this project</h3> 
+</div>
 			</div>
 		</div>
 		<div class="span4">
@@ -118,7 +177,12 @@
 				<div class="well">
 					<ul class="nav nav-list">
 						<li class="nav-header">Table of Contents</li>
-		<li><a href="#stateroom" title="Stateroom">Stateroom</a>
+		<li class="dropdown"><a href="#Dependency_Convergence" title="Dependency Convergence">Dependency Convergence <b class="caret"></b></a>
+			<ul class="nav nav-list">
+		<li><a href="#Dependencies_used_in_this_project" title="Dependencies used in this project">Dependencies used in this project</a>
+				<li class="divider"></li>
+			</ul>
+		</li>
 					</ul>
 				</div>
 			</div>
@@ -136,8 +200,8 @@
 				<div class="span3 bottom-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Main</li>
-						<li class="active">
-							<a href="#" title="Home">Home</a>
+						<li >
+							<a href="./" title="Home">Home</a>
 						</li>
 						<li >
 							<a href="http://github.com/andriusvelykis/reflow-maven-skin/" title="GitHub project" class="externalLink">GitHub project</a>
@@ -190,7 +254,42 @@
 					<ul class="nav nav-list">
 						<li class="nav-header">Maven documentation</li>
 						<li >
-							<a href="project-info.html" title="Project Information">Project Information <i class="icon-chevron-right"></i></a>
+							<a href="project-info.html" title="Project Information">Project Information <i class="icon-chevron-down"></i></a>
+							<ul class="nav nav-list">
+						<li >
+							<a href="project-summary.html" title="Project Summary">Project Summary</a>
+						</li>
+						<li >
+							<a href="team-list.html" title="Project Team">Project Team</a>
+						</li>
+						<li >
+							<a href="dependencies.html" title="Dependencies">Dependencies</a>
+						</li>
+						<li >
+							<a href="issue-tracking.html" title="Issue Tracking">Issue Tracking</a>
+						</li>
+						<li >
+							<a href="source-repository.html" title="Source Repository">Source Repository</a>
+						</li>
+						<li >
+							<a href="integration.html" title="Continuous Integration">Continuous Integration</a>
+						</li>
+						<li >
+							<a href="plugins.html" title="Project Plugins">Project Plugins</a>
+						</li>
+						<li >
+							<a href="distribution-management.html" title="Distribution Management">Distribution Management</a>
+						</li>
+						<li >
+							<a href="license.html" title="Project License">Project License</a>
+						</li>
+						<li class="active">
+							<a href="#" title="Dependency Convergence">Dependency Convergence</a>
+						</li>
+						<li >
+							<a href="plugin-management.html" title="Plugin Management">Plugin Management</a>
+						</li>
+							</ul>
 						</li>
 						<li >
 							<a href="project-reports.html" title="Project Reports">Project Reports <i class="icon-chevron-right"></i></a>

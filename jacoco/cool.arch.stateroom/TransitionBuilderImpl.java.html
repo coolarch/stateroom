@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TransitionBuilderImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">cool.arch.stateroom:stateroom</a> &gt; <a href="index.source.html" class="el_package">cool.arch.stateroom</a> &gt; <span class="el_source">TransitionBuilderImpl.java</span></div><h1>TransitionBuilderImpl.java</h1><pre class="source lang-java linenums">package cool.arch.stateroom;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+
+final class TransitionBuilderImpl&lt;M&gt; extends AbstractBuilderImpl&lt;Transition&lt;M&gt;&gt; implements TransitionBuilder&lt;M&gt; {
+
+	protected TransitionBuilderImpl() {
+<span class="fc" id="L12">		super(new Transition&lt;&gt;());</span>
+<span class="fc" id="L13">	}</span>
+
+	@Override
+	protected Set&lt;String&gt; validate(Set&lt;String&gt; errors, Transition&lt;M&gt; instance) {
+<span class="pc bpc" id="L17" title="1 of 2 branches missed.">		if (instance.getPredicate() == null) {</span>
+<span class="nc" id="L18">			errors.add(&quot;predicate shall not be null&quot;);</span>
+		}
+
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">		if (instance.getTargetState() == null) {</span>
+<span class="nc" id="L22">			errors.add(&quot;targetState shall not be null&quot;);</span>
+		}
+
+<span class="fc" id="L25">		return errors;</span>
+	}
+
+	@Override
+	public TransitionBuilder&lt;M&gt; when(Predicate&lt;Context&lt;M&gt;&gt; predicate) {
+<span class="fc" id="L30">		getInstance().setPredicate(predicate);</span>
+		
+<span class="fc" id="L32">		return this;</span>
+	}
+
+	@Override
+	public TransitionBuilder&lt;M&gt; to(State&lt;M&gt; targetState) {
+<span class="fc" id="L37">		getInstance().setTargetState(targetState);</span>
+		
+<span class="fc" id="L39">		return this;</span>
+	}
+
+	@Override
+	public TransitionBuilder&lt;M&gt; transformModelWith(BiFunction&lt;State&lt;M&gt;, M, M&gt; modelTransform) {
+<span class="nc" id="L44">		getInstance().setModelTransform(requireNonNull(modelTransform, &quot;modelTransform shall not be null&quot;));</span>
+		
+<span class="nc" id="L46">		return this;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

@@ -1,0 +1,13 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+cool.arch.stateroom:stateroom,cool.arch.stateroom.exception,InvalidMachineException,16,0,0,0,8,0,4,0,4,0
+cool.arch.stateroom:stateroom,cool.arch.stateroom,TransitionBuilderImpl,18,28,2,2,4,9,3,4,1,4
+cool.arch.stateroom:stateroom,cool.arch.stateroom,Context,9,27,0,0,1,8,1,4,1,4
+cool.arch.stateroom:stateroom,cool.arch.stateroom,Machine,91,141,6,10,18,38,13,14,8,11
+cool.arch.stateroom:stateroom,cool.arch.stateroom,StateBuilderFacadeImpl,17,69,0,0,7,17,1,5,1,5
+cool.arch.stateroom:stateroom,cool.arch.stateroom,Transition,20,29,0,0,4,10,3,8,3,8
+cool.arch.stateroom:stateroom,cool.arch.stateroom,AbstractBuilderImpl,34,25,1,1,4,7,1,3,0,3
+cool.arch.stateroom:stateroom,cool.arch.stateroom,Transitions,48,40,7,1,9,10,6,5,2,5
+cool.arch.stateroom:stateroom,cool.arch.stateroom,StateBuilderImpl,10,25,0,0,2,7,1,4,1,4
+cool.arch.stateroom:stateroom,cool.arch.stateroom,State,46,58,0,0,11,19,6,9,6,9
+cool.arch.stateroom:stateroom,cool.arch.stateroom,MachineBuilderImpl,24,94,2,2,2,22,2,9,0,9
+cool.arch.stateroom:stateroom,cool.arch.stateroom.enums,Status,9,39,0,0,0,4,2,2,2,2
