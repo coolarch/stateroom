@@ -13,6 +13,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<lib.junit.version>4.12</lib.junit.version>
 		<lib.mockito.version>1.7</lib.mockito.version>
+		<github.global.server>github</github.global.server>
 	</properties>
 	<scm>
 		<connection>scm:git:https://github.com/coolarch/stateroom.git</connection>
@@ -99,6 +100,12 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.4</version>
+				<executions>
+					<execution>
+						<id>default-deploy</id>
+						<phase>disabled</phase>
+					</execution>
+				</executions>
 				<dependencies>
 					<dependency>
 						<groupId>lt.velykis.maven.skins</groupId>
@@ -224,6 +231,23 @@
 					<releaseProfiles>release</releaseProfiles>
 					<goals>deploy</goals>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.11</version>
+				<configuration>
+					<message>Creating site for ${project.version}</message>
+				</configuration>
+				<executions>
+					<execution>
+						<id>github-site-maven-plugin-site-deploy</id>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>site-deploy</phase>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>

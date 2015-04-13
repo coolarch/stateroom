@@ -56,8 +56,7 @@
     
 <menu name="Main" inherit="top">
       <item name="Home" href="./" />
-      <item name="GitHub project" href="http://github.com/andriusvelykis/reflow-maven-skin/" />
-      <item name="Blog" href="http://andrius.velykis.lt/tag/reflow-maven-skin/" />
+      <item name="GitHub project" href="https://github.com/coolarch/stateroom/" />
       <item name="Release notes" href="release-notes.html" />
     </menu>
     <menu name="Download" inherit="top">
@@ -65,6 +64,7 @@
       <item name="License" href="license.html" />
     </menu>
     <menu name="Documentation" inherit="bottom">
+    <!--
       <item name="Usage" href="skin/" />
       <item name="Configuration" href="skin/config.html" />
       <item name="Themes" href="skin/themes/" />
@@ -73,16 +73,12 @@
       <item name="Other" href="skin/misc.html" />
       <item name="Multi-module site" href="skin/multi-module.html" />
       <item name="Local resources" href="skin/resources.html" />
-    </menu>
-    <menu name="Tools" inherit="bottom">
-      <item name="Reflow Velocity tools" href="reflow-velocity-tools/" />
-      <item name="Tools Javadoc" href="reflow-velocity-tools/apidocs/" />
+      -->
     </menu>
     <menu name="Contribute" inherit="bottom">
       <item name="Contribute" href="contribute.html" />
-      <item name="Issues" href="http://github.com/andriusvelykis/reflow-maven-skin/issues/" />
-      <item name="Fork on GitHub" href="http://github.com/andriusvelykis/reflow-maven-skin/" />
-      <item name="Donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;amp;hosted_button_id=QWKNRFZH52828" />
+      <item name="Issues" href="https://github.com/coolarch/stateroom/issues/" />
+      <item name="Fork on GitHub" href="https://github.com/coolarch/stateroom/" />
     </menu>
     <menu name="Maven documentation" ref="reports" inherit="bottom"/>    
 <footer>CoolArch, All rights reserved.</footer>
