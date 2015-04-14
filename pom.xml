@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cool.arch.stateroom</groupId>
 	<artifactId>stateroom</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Java framework library for finite state machines</description>
@@ -19,7 +19,7 @@
 		<connection>scm:git:https://github.com/coolarch/stateroom.git</connection>
 		<developerConnection>scm:git:https://github.com/coolarch/stateroom.git</developerConnection>
 		<url>https://github.com/coolarch/stateroom</url>
-	  <tag>stateroom-1.0.0</tag>
+	  <tag>HEAD</tag>
   </scm>
 	<licenses>
 		<license>
