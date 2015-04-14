@@ -57,23 +57,10 @@
 <menu name="Main" inherit="top">
       <item name="Home" href="./" />
       <item name="GitHub project" href="https://github.com/coolarch/stateroom/" />
-      <item name="Release notes" href="release-notes.html" />
     </menu>
     <menu name="Download" inherit="top">
       <item name="Download" href="download.html" />
       <item name="License" href="license.html" />
-    </menu>
-    <menu name="Documentation" inherit="bottom">
-    <!--
-      <item name="Usage" href="skin/" />
-      <item name="Configuration" href="skin/config.html" />
-      <item name="Themes" href="skin/themes/" />
-      <item name="Layouts" href="skin/layouts.html" />
-      <item name="Components" href="skin/components.html" />
-      <item name="Other" href="skin/misc.html" />
-      <item name="Multi-module site" href="skin/multi-module.html" />
-      <item name="Local resources" href="skin/resources.html" />
-      -->
     </menu>
     <menu name="Contribute" inherit="bottom">
       <item name="Contribute" href="contribute.html" />
@@ -93,7 +80,7 @@
         <name>Stateroom</name>
         <href>http://www.arch.cool/stateroom</href>
       </brand>
-      <slogan>Super interesting project doing good things.</slogan>
+      <slogan>Simple. Immutable. Fluent.</slogan>
       <titleTemplate>%2$s | %1$s</titleTemplate>
       <toc>sidebar</toc>
       <topNav>Download|reports</topNav>
@@ -103,10 +90,10 @@
         <column>reports|modules</column>
       </bottomNav>
       <bottomDescription>
-        This is a very good project doing interesting and valuable things.
+        Simple. Immutable. Fluent.
       </bottomDescription>
       <pages>
-        <index project="project-id">
+        <index> <!--  project="stateroom" -->
           <shortTitle>Welcome</shortTitle>
           <breadcrumbs>false</breadcrumbs>
           <toc>false</toc>
@@ -121,6 +108,10 @@
         <developer-info>
           <toc>sidebar</toc>
         </developer-info>
+        <license>
+          <highlightJs>false</highlightJs>
+          <toc>false</toc>
+        </license>
       </pages>
       <skinAttribution>false</skinAttribution>
     </reflowSkin>
