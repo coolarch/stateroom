@@ -3,7 +3,7 @@ package cool.arch.stateroom;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 final class StateBuilderFacadeImpl<M> implements StateBuilderFacade<M> {
 	
@@ -38,7 +38,7 @@ final class StateBuilderFacadeImpl<M> implements StateBuilderFacade<M> {
 	}
 
 	@Override
-	public StateBuilderFacade<M> to(State<M> targetState, Predicate<Context<M>> predicate) {
+	public StateBuilderFacade<M> to(State<M> targetState, BiPredicate<State<M>, M> predicate) {
 		final Transition<M> transition = Transition.<M>builder()
 			.to(targetState)
 			.when(predicate)
@@ -50,7 +50,7 @@ final class StateBuilderFacadeImpl<M> implements StateBuilderFacade<M> {
 	}
 
 	@Override
-	public StateBuilderFacade<M> to(State<M> targetState, Predicate<Context<M>> predicate,
+	public StateBuilderFacade<M> to(State<M> targetState, BiPredicate<State<M>, M> predicate,
 		BiFunction<State<M>, M, M> modelTransform) {
 		final Transition<M> transition = Transition.<M>builder()
 			.to(targetState)

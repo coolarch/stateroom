@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Set;
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 final class TransitionBuilderImpl<M> extends AbstractBuilderImpl<Transition<M>> implements TransitionBuilder<M> {
 
@@ -26,7 +26,7 @@ final class TransitionBuilderImpl<M> extends AbstractBuilderImpl<Transition<M>> 
 	}
 
 	@Override
-	public TransitionBuilder<M> when(Predicate<Context<M>> predicate) {
+	public TransitionBuilder<M> when(BiPredicate<State<M>, M> predicate) {
 		getInstance().setPredicate(predicate);
 		
 		return this;

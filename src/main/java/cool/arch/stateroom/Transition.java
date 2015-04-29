@@ -1,11 +1,11 @@
 package cool.arch.stateroom;
 
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 public class Transition<M> {
 
-	private Predicate<Context<M>> predicate;
+	private BiPredicate<State<M>, M> predicate;
 
 	private State<M> targetState;
 
@@ -19,7 +19,7 @@ public class Transition<M> {
 		return modelTransform;
 	}
 
-	public Predicate<Context<M>> getPredicate() {
+	public BiPredicate<State<M>, M> getPredicate() {
 		return predicate;
 	}
 
@@ -27,7 +27,7 @@ public class Transition<M> {
 		return targetState;
 	}
 
-	void setPredicate(Predicate<Context<M>> predicate) {
+	void setPredicate(BiPredicate<State<M>, M> predicate) {
 		this.predicate = predicate;
 	}
 

@@ -60,19 +60,20 @@ public class Machine<M> {
 	public Context<M> evaluate(final Context<M> context) {
 		State<M> state = context.getState();
 		Status status = context.getStatus();
-		M model = context.getModel();
-		model = preEvaluationTransform.apply(state, model);
+		final M model = context.getModel();
+		final M transformedModel = preEvaluationTransform.apply(state, model);
+		M resultingModel = transformedModel;
 		
 		final Transitions<M> stateTransitions = transitions.get(context.getState());
 
 		if (stateTransitions != null) {
 			for (final Transition<M> transition : stateTransitions) {
-				final Predicate<Context<M>> predicate = transition.getPredicate();
+				final BiPredicate<State<M>, M> predicate = transition.getPredicate();
 
-				if (predicate.test(context)) {
+				if (predicate.test(state, transformedModel)) {
 					state = transition.getTargetState();
 					final BiFunction<State<M>, M, M> modelTransform = transition.getModelTransform();
-					model = modelTransform.apply(state, model);
+					resultingModel = modelTransform.apply(state, transformedModel);
 					break;
 				}
 			}
@@ -86,7 +87,7 @@ public class Machine<M> {
 			}
 		}
 
-		return new Context<>(state, status, model);
+		return new Context<>(state, status, resultingModel);
 	}
 
 	public Context<M> evaluateUntilHalted(final Context<M> context) {

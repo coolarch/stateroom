@@ -11,6 +11,7 @@ import static org.junit.Assert.assertSame;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import org.junit.Test;
@@ -69,8 +70,8 @@ public class StateTest {
 		assertEquals(ACCEPTED, newContext.getStatus());
 	}
 
-	Predicate<Context<Alphabet>> is(final Alphabet value) {
-		return c -> value.equals(c.getModel());
+	BiPredicate<State<Alphabet>, Alphabet> is(final Alphabet value) {
+		return (state, model) -> value.equals(model);
 	}
 
 	public static enum Alphabet {
