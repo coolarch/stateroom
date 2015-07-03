@@ -1,5 +1,18 @@
 package cool.arch.stateroom;
 
+/*
+ * #%L cool.arch.stateroom:stateroom %% Copyright (C) 2015 CoolArch %% Licensed to the Apache
+ * Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE
+ * file distributed with this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you
+ * may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or
+ * agreed to in writing, software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under the License.
+ * #L%
+ */
+
 import static cool.arch.stateroom.enums.Status.READY;
 
 import java.util.HashMap;
@@ -16,7 +29,7 @@ public class Machine<M> {
 
 	private Supplier<M> modelSupplier;
 
-	private BiFunction<State<M>, M, M> preEvaluationTransform = (state,model) -> model;
+	private BiFunction<State<M>, M, M> preEvaluationTransform = (state, model) -> model;
 
 	private State<M> startState;
 
@@ -29,23 +42,26 @@ public class Machine<M> {
 		final StringBuilder sb = new StringBuilder("{'startState':");
 		sb.append(startState);
 		sb.append(", 'transitions':{");
-		
+
 		if (transitions != null) {
-			final String transitionsString = transitions.entrySet().stream()
-				.map(e -> String.format("'%s':%s", e.getKey().getName(), e.getValue()))
+			final String transitionsString = transitions.entrySet()
+				.stream()
+				.map(e -> String.format("'%s':%s", e.getKey()
+					.getName(), e.getValue()))
 				.collect(Collectors.joining(","));
-			
+
 			sb.append(transitionsString);
 		}
-		
+
 		sb.append("},'states':[");
-		
-		sb.append(transitions.keySet().stream()
+
+		sb.append(transitions.keySet()
+			.stream()
 			.map(e -> e.toString())
 			.collect(Collectors.joining(",")));
-			
+
 		sb.append("]}");
-		
+
 		return sb.toString();
 	}
 
@@ -63,7 +79,7 @@ public class Machine<M> {
 		final M model = context.getModel();
 		final M transformedModel = preEvaluationTransform.apply(state, model);
 		M resultingModel = transformedModel;
-		
+
 		final Transitions<M> stateTransitions = transitions.get(context.getState());
 
 		if (stateTransitions != null) {
@@ -124,7 +140,7 @@ public class Machine<M> {
 		this.modelSupplier = modelSupplier;
 	}
 
-	void setPreEvaluationTransform(BiFunction<State<M>,M, M> preEvaluationTransform) {
+	void setPreEvaluationTransform(BiFunction<State<M>, M, M> preEvaluationTransform) {
 		this.preEvaluationTransform = preEvaluationTransform;
 	}
 
