@@ -1,5 +1,7 @@
 package cool.arch.stateroom;
 
+import java.lang.invoke.MethodHandles;
+
 /*
  * #%L cool.arch.stateroom:stateroom %% Copyright (C) 2015 CoolArch %% Licensed to the Apache
  * Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE
@@ -15,8 +17,14 @@ package cool.arch.stateroom;
 
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Transition<M> {
+
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup()
+		.lookupClass()
+		.toString());
 
 	private BiPredicate<State<M>, M> predicate;
 
@@ -25,7 +33,12 @@ public class Transition<M> {
 	private BiFunction<State<M>, M, M> modelTransform = (state, model) -> model;
 
 	public M onEnter(final State<M> state, final M model) {
-		return modelTransform.apply(state, model);
+		LOGGER.log(Level.FINE,
+			() -> String.format("Entering Transition: %s, Model before state: %s", Transition.this, model));
+		final M resultingModel = modelTransform.apply(state, model);
+		LOGGER.log(Level.FINE, () -> "Model after state: " + resultingModel);
+
+		return resultingModel;
 	}
 
 	public BiFunction<State<M>, M, M> getModelTransform() {

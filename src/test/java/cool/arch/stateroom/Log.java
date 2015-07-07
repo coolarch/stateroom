@@ -13,40 +13,26 @@ package cool.arch.stateroom;
  * #L%
  */
 
-import static java.util.Objects.requireNonNull;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
-import java.util.Set;
-import java.util.function.BiFunction;
+public class Log {
 
-final class StateBuilderImpl<M> extends AbstractBuilderImpl<State<M>> implements StateBuilder<M> {
-
-	protected StateBuilderImpl() {
-		super(new State<>());
+	static {
+		try (final InputStream inputStream = Log.class.getResourceAsStream("/logging.properties")) {
+			LogManager.getLogManager()
+				.readConfiguration(inputStream);
+		} catch (final IOException e) {
+			Logger.getAnonymousLogger()
+				.severe("Could not load default logging.properties file");
+			Logger.getAnonymousLogger()
+				.severe(e.getMessage());
+		}
 	}
 
-	@Override
-	protected Set<String> validate(Set<String> errors, State<M> instance) {
-		return errors;
-	}
-
-	@Override
-	public StateBuilder<M> withName(String name) {
-		getInstance().setName(requireNonNull(name, "name shall not be null"));
-
-		return this;
-	}
-
-	@Override
-	public StateBuilder<M> withModelTransform(BiFunction<State<M>, M, M> modelTransform) {
-		getInstance().setModelTransform(requireNonNull(modelTransform, "modelTransform shall not be null"));
-
-		return this;
-	}
-
-	@Override
-	public StateBuilder<M> withAcceptState(boolean acceptState) {
-		getInstance().setAcceptState(acceptState);
-
-		return this;
+	public static Logger getLogger(final String name) {
+		return Logger.getLogger(name);
 	}
 }

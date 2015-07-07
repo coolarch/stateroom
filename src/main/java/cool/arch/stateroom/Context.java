@@ -61,4 +61,21 @@ public final class Context<M> {
 	public M getModel() {
 		return model;
 	}
+
+	@Override
+	public String toString() {
+		// TODO - Implement
+
+		final StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		sb.append("'state':");
+		sb.append(state);
+		sb.append("'status':");
+		sb.append(status);
+		sb.append("'model':");
+		sb.append(model);
+		sb.append("}");
+
+		return sb.toString();
+	}
 }

@@ -22,10 +22,12 @@ import static cool.arch.stateroom.enums.Status.ACCEPTED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
+import java.lang.invoke.MethodHandles;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.BiPredicate;
-import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.Test;
 
@@ -38,25 +40,20 @@ import cool.arch.stateroom.State;
  */
 public class StateTest {
 
+	private static final Logger LOGGER = Log.getLogger(MethodHandles.lookup()
+		.lookupClass()
+		.getName());
+
 	@Test
 	public final void test() {
-		final Queue<Alphabet> input = new LinkedList<>();
-		input.add(A);
-		input.add(B);
-		input.add(B);
-		input.add(A);
-		input.add(B);
-		input.add(A);
-		input.add(B);
-		input.add(A);
-
+		final Queue<Alphabet> input = buildInput();
 		final State<Alphabet> evenEven = State.of("Even Even", true);
 		final State<Alphabet> evenOdd = State.of("Even Odd");
 		final State<Alphabet> oddEven = State.of("Odd Even");
 		final State<Alphabet> oddOdd = State.of("Odd Odd");
 
 		final Machine<Alphabet> machine = Machine.builder(Alphabet.class)
-			.withModelSupplier(input::poll)
+			.withModelSupplier(() -> null)
 			.withStartState(evenEven)
 			.withPreEvaluationTransform((s, m) -> input.poll())
 			.haltWhen((state, model) -> model == null)
@@ -84,11 +81,32 @@ public class StateTest {
 	}
 
 	BiPredicate<State<Alphabet>, Alphabet> is(final Alphabet value) {
-		return (state, model) -> value.equals(model);
+		return (state, model) -> {
+			final boolean result = value.equals(model);
+
+			LOGGER.log(Level.FINE,
+				() -> String.format("Comparing %s with %s.  Equal: %s", value, model, Boolean.valueOf(result)));
+
+			return result;
+		};
 	}
 
 	public static enum Alphabet {
 			A,
 			B
+	}
+
+	private static final Queue<Alphabet> buildInput() {
+		final Queue<Alphabet> input = new LinkedList<>();
+		input.add(A);
+		input.add(B);
+		input.add(B);
+		input.add(A);
+		//		input.add(B);
+		//		input.add(A);
+		//		input.add(B);
+		//		input.add(A);
+
+		return input;
 	}
 }

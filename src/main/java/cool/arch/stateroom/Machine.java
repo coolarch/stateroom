@@ -15,17 +15,23 @@ package cool.arch.stateroom;
 
 import static cool.arch.stateroom.enums.Status.READY;
 
+import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import cool.arch.stateroom.enums.Status;
 
 public class Machine<M> {
+
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup()
+		.lookupClass()
+		.getName());
 
 	private Supplier<M> modelSupplier;
 
@@ -77,41 +83,75 @@ public class Machine<M> {
 		State<M> state = context.getState();
 		Status status = context.getStatus();
 		final M model = context.getModel();
+
+		LOGGER.log(
+			Level.FINE,
+			() -> String.format("Evaluating machine with State: %s, Status: %s, Model: %s", context.getState(),
+				context.getStatus(), context.getModel()));
+
 		final M transformedModel = preEvaluationTransform.apply(state, model);
+
+		LOGGER.log(Level.FINE, () -> String.format("After preevaluation transform. Model: %s", transformedModel));
+
 		M resultingModel = transformedModel;
 
 		final Transitions<M> stateTransitions = transitions.get(context.getState());
 
 		if (stateTransitions != null) {
 			for (final Transition<M> transition : stateTransitions) {
+				LOGGER.log(Level.FINE, () -> String.format("Evaluating transition %s", transition));
+
 				final BiPredicate<State<M>, M> predicate = transition.getPredicate();
 
 				if (predicate.test(state, transformedModel)) {
+					LOGGER.log(Level.FINE, "Predicate accepted");
+
 					state = transition.getTargetState();
-					final BiFunction<State<M>, M, M> modelTransform = transition.getModelTransform();
-					resultingModel = modelTransform.apply(state, transformedModel);
+					resultingModel = transition.onEnter(state, resultingModel);
+					resultingModel = state.onEnter(resultingModel);
+
+					final State<M> currentState = state;
+					final M currentModel = resultingModel;
+
+					LOGGER.log(Level.FINE,
+						() -> String.format("Resulting state: %s, Model: %s", currentState, currentModel));
 					break;
 				}
 			}
 		}
 
-		if (READY.equals(status) && haltPredicate.test(state, model)) {
+		final boolean shouldHalt = haltPredicate.test(state, resultingModel);
+
+		LOGGER.log(Level.FINE, () -> String.format("Appropriate to halt: %s", Boolean.valueOf(shouldHalt)));
+
+		if (READY.equals(status) && shouldHalt) {
 			if (state.isAcceptState()) {
 				status = Status.ACCEPTED;
+				LOGGER.log(Level.FINE, "Setting status ACCEPTED");
 			} else {
 				status = Status.CRASHED;
+				LOGGER.log(Level.FINE, "Setting status CRASHED");
 			}
 		}
 
-		return new Context<>(state, status, resultingModel);
+		final Context<M> resultingContext = new Context<>(state, status, resultingModel);
+
+		LOGGER.log(Level.FINE,
+			() -> String.format("Completing evaluation with resulting context: %s", resultingContext));
+
+		return resultingContext;
 	}
 
 	public Context<M> evaluateUntilHalted(final Context<M> context) {
 		Context<M> currentContext = context;
 
+		LOGGER.log(Level.FINE, "Evaluating until halted");
+
 		while (READY.equals(currentContext.getStatus())) {
 			currentContext = evaluate(currentContext);
 		}
+
+		LOGGER.log(Level.FINE, "Completed evaluation");
 
 		return currentContext;
 	}

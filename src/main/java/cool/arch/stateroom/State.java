@@ -1,5 +1,7 @@
 package cool.arch.stateroom;
 
+import java.lang.invoke.MethodHandles;
+
 /*
  * #%L cool.arch.stateroom:stateroom %% Copyright (C) 2015 CoolArch %% Licensed to the Apache
  * Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE
@@ -15,8 +17,14 @@ package cool.arch.stateroom;
 
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiFunction;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class State<M> {
+
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup()
+		.lookupClass()
+		.toString());
 
 	private static final AtomicLong COUNTER = new AtomicLong(-1);
 
@@ -32,12 +40,14 @@ public class State<M> {
 	/**
 	 * 
 	 */
-	private BiFunction<State<M>, Context<M>, M> modelTransform = (state, context) -> context.getModel();
+	private BiFunction<State<M>, M, M> modelTransform = (state, model) -> model;
 
-	public Context<M> onEnter(final Context<M> context) {
-		final M model = modelTransform.apply(this, context);
+	public M onEnter(final M model) {
+		LOGGER.log(Level.FINE, () -> String.format("Entering State: %s, Model before state: %s", State.this, model));
+		final M resultingModel = modelTransform.apply(this, model);
+		LOGGER.log(Level.FINE, () -> "Model after state: " + resultingModel);
 
-		return context.derive(model);
+		return resultingModel;
 	}
 
 	public String getName() {
@@ -48,7 +58,7 @@ public class State<M> {
 		return acceptState;
 	}
 
-	public BiFunction<State<M>, Context<M>, M> getModelTransform() {
+	public BiFunction<State<M>, M, M> getModelTransform() {
 		return modelTransform;
 	}
 
@@ -60,7 +70,7 @@ public class State<M> {
 		this.acceptState = acceptState;
 	}
 
-	void setModelTransform(BiFunction<State<M>, Context<M>, M> modelTransform) {
+	void setModelTransform(BiFunction<State<M>, M, M> modelTransform) {
 		this.modelTransform = modelTransform;
 	}
 
@@ -82,7 +92,7 @@ public class State<M> {
 	}
 
 	public static <T> State<T> of(final String name, final boolean acceptState,
-		BiFunction<State<T>, Context<T>, T> modelTransform) {
+		BiFunction<State<T>, T, T> modelTransform) {
 		return State.<T> builder()
 			.withName(name)
 			.withAcceptState(acceptState)
